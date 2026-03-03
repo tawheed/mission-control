@@ -639,21 +639,17 @@ class PresenceSidebar(Static):
 class StatsBar(Static):
     """Bottom status bar with token count and bot status."""
 
-    def render_stats(self, engine: MessageEngine, speed: float, paused: bool) -> str:
+    def render_stats(self, engine: MessageEngine, speed: float) -> str:
         online = sum(1 for b in engine.bots if b.status == "online")
         busy = sum(1 for b in engine.bots if b.status == "busy")
         away = sum(1 for b in engine.bots if b.status == "away")
         tokens = f"{engine.token_count:,}"
         msgs = f"{engine.message_count:,}"
-        speed_label = SPEED_LABELS.get(speed, f"{speed}x")
-        paused_tag = "  [bold red]PAUSED[/]" if paused else ""
 
         return (
-            f"  Tokens: [bold]{tokens}[/]  |  "
+            f"  Tokens Consumed: [bold]{tokens}[/]  |  "
             f"Messages: [bold]{msgs}[/]  |  "
-            f"[green]\u25cf {online}[/]  [yellow]\u25d0 {busy}[/]  [dim]\u25cb {away}[/]  |  "
-            f"Speed: [bold]{speed_label}[/]"
-            f"{paused_tag}"
+            f"[green]\u25cf {online}[/]  [yellow]\u25d0 {busy}[/]  [dim]\u25cb {away}[/]"
         )
 
 
@@ -731,8 +727,7 @@ class ChatroomApp(App):
 
     BINDINGS = [
         Binding("q", "quit", "Quit"),
-        Binding("p", "toggle_pause", "Pause"),
-        Binding("s", "cycle_speed", "Speed"),
+        Binding("s", "cycle_speed", "Speed", show=False),
         Binding("space", "scroll_bottom", "Scroll Down", show=False),
     ]
 
@@ -750,7 +745,6 @@ class ChatroomApp(App):
                 b.status = "away"
         self._engine = MessageEngine(self._bots)
         self._speed = 1.0
-        self._paused = False
         self._running = True
 
     def compose(self) -> ComposeResult:
@@ -790,17 +784,13 @@ class ChatroomApp(App):
         status_interval = random.uniform(30, 60)
 
         while self._running:
-            if self._paused:
-                time.sleep(0.2)
-                continue
-
             # Determine interval for this tick
             roll = random.random()
             if roll < 0.15:
                 # Burst: 3-5 messages fast
                 burst_count = random.randint(3, 5)
                 for _ in range(burst_count):
-                    if not self._running or self._paused:
+                    if not self._running:
                         break
                     msg = self._engine.generate()
                     self.call_from_thread(self._append_chat_message, msg)
@@ -847,15 +837,11 @@ class ChatroomApp(App):
     def _update_stats(self) -> None:
         try:
             bar = self.query_one("#stats-bar", StatsBar)
-            bar.update(bar.render_stats(self._engine, self._speed, self._paused))
+            bar.update(bar.render_stats(self._engine, self._speed))
         except Exception:
             pass
 
     # Actions
-    def action_toggle_pause(self) -> None:
-        self._paused = not self._paused
-        self._update_stats()
-
     def action_cycle_speed(self) -> None:
         idx = SPEED_CYCLE.index(self._speed) if self._speed in SPEED_CYCLE else 0
         self._speed = SPEED_CYCLE[(idx + 1) % len(SPEED_CYCLE)]
