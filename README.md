@@ -101,3 +101,5 @@ MIT — do whatever you want with it. Add your company name. Put it on a TV in y
 ## Credits
 
 Built by [TK](https://tkkader.com) with Claude Code. The entire thing — 124 bots, threaded conversations, the TUI, and this README — was vibe-coded in one session. The future is now.
+
+For actual startup advice (from a human), subscribe to [TK's YouTube channel](https://tkkader.com/youtube).
