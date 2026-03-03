@@ -678,9 +678,9 @@ def _format_message(msg: ChatMessage) -> str:
 
 
 class ChatroomApp(App):
-    """Nexus AI \u2014 124-bot startup chatroom screensaver."""
+    """Mission Control \u2014 124 AI agents running your startup."""
 
-    TITLE = "Nexus AI \u2014 #general"
+    TITLE = "Mission Control \u2014 #general"
 
     CSS = """
     Screen {
@@ -803,7 +803,7 @@ class ChatroomApp(App):
                     if not self._running or self._paused:
                         break
                     msg = self._engine.generate()
-                    self.call_from_thread(self._post_message, msg)
+                    self.call_from_thread(self._append_chat_message, msg)
                     time.sleep(random.uniform(0.1, 0.3) / self._speed)
             elif roll < 0.25:
                 # Quiet pause
@@ -812,7 +812,7 @@ class ChatroomApp(App):
             else:
                 # Normal message
                 msg = self._engine.generate()
-                self.call_from_thread(self._post_message, msg)
+                self.call_from_thread(self._append_chat_message, msg)
 
             # Base interval between ticks
             time.sleep(random.uniform(0.5, 1.2) / self._speed)
@@ -825,7 +825,7 @@ class ChatroomApp(App):
                 status_timer = now
                 status_interval = random.uniform(30, 60)
 
-    def _post_message(self, msg: ChatMessage) -> None:
+    def _append_chat_message(self, msg: ChatMessage) -> None:
         try:
             log = self.query_one("#chat-log", RichLog)
             log.write(_format_message(msg))
