@@ -6,7 +6,7 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ ! -d "$DIR/.venv" ]; then
     echo "Setting up Mission Control..."
     python3 -m venv "$DIR/.venv"
-    "$DIR/.venv/bin/pip" install -q textual
+    "$DIR/.venv/bin/pip" install -q "textual>=0.86,<8"
 fi
 
 exec "$DIR/.venv/bin/python3" "$DIR/app.py" "$@"
