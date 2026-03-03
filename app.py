@@ -12,7 +12,7 @@ from textual import work
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical, VerticalScroll
-from textual.widgets import Footer, Header, RichLog, Static
+from textual.widgets import Header, RichLog, Static
 
 # ---------------------------------------------------------------------------
 # Bot definitions
@@ -650,6 +650,7 @@ class StatsBar(Static):
             f"  Tokens Consumed: [bold]{tokens}[/]  |  "
             f"Messages: [bold]{msgs}[/]  |  "
             f"[green]\u25cf {online}[/]  [yellow]\u25d0 {busy}[/]  [dim]\u25cb {away}[/]"
+            f"  |  [dim]q Quit[/]"
         )
 
 
@@ -719,10 +720,6 @@ class ChatroomApp(App):
         background: $boost;
         padding: 0 0;
     }
-
-    Footer {
-        dock: bottom;
-    }
     """
 
     BINDINGS = [
@@ -761,7 +758,6 @@ class ChatroomApp(App):
                 yield Static("[bold]TEAM (124)[/]", id="sidebar-title")
                 yield PresenceSidebar(id="presence")
         yield StatsBar(id="stats-bar")
-        yield Footer()
 
     def on_mount(self) -> None:
         # Pre-fill history
