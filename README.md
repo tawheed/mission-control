@@ -34,20 +34,15 @@ This is that. In your terminal.
 - Pre-filled chat history so it looks like things were happening before you showed up
 - Speed controls: 0.5x for zen mode, 4x for "I have a board meeting in 5 minutes"
 
-## Install
-
-```bash
-git clone https://github.com/tkkader/mission-control.git
-cd mission-control
-python3 -m venv .venv
-.venv/bin/pip install textual
-```
-
 ## Run
 
 ```bash
-.venv/bin/python3 app.py
+git clone https://github.com/tawheed/mission-control.git
+cd mission-control
+./mission-control
 ```
+
+That's it. The launcher auto-creates a virtualenv and installs dependencies on first run.
 
 ## Controls
 

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
+if [ ! -d "$DIR/.venv" ]; then
+    echo "Setting up Mission Control..."
+    python3 -m venv "$DIR/.venv"
+    "$DIR/.venv/bin/pip" install -q textual
+fi
+
+exec "$DIR/.venv/bin/python3" "$DIR/app.py" "$@"
