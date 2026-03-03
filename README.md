@@ -49,9 +49,6 @@ That's it. The launcher auto-creates a virtualenv and installs dependencies on f
 | Key | Action |
 |-----|--------|
 | `q` | Quit (but why would you) |
-| `p` | Pause / Resume |
-| `s` | Cycle speed: 1x → 2x → 4x → 0.5x |
-| `Space` | Scroll to bottom |
 
 ## The Team
 
