@@ -1,0 +1,12 @@
+[project]
+name = "mission-control"
+version = "1.0.0"
+description = "124 AI agents pretending to run your startup so you don't have to"
+requires-python = ">=3.11"
+dependencies = [
+    "textual>=0.86",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
