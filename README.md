@@ -101,4 +101,15 @@ MIT — do whatever you want with it. Add your company name. Put it on a TV in y
 
 Built by [TK](https://tkkader.com) with Claude Code. The entire thing — 124 bots, threaded conversations, the TUI, and this README — was vibe-coded in one session. The future is now.
 
-For actual startup advice (from a human), subscribe to [TK's YouTube channel](https://tkkader.com/youtube).
+## Now Go Actually Build Your Startup
+
+The agents have it covered. Here's what *you* should be focused on — GTM and distribution.
+
+- [Go-To-Market Strategy Framework That Works in 2026](https://youtu.be/XMem2vKeXbk) — The exact framework for building a go-to-market engine that fills your pipeline.
+- [How To Create a Go To Market Strategy (2026 Playbook)](https://youtu.be/AkdiTRGFc18) — Step-by-step playbook for taking your SaaS from zero to repeatable revenue.
+- [B2B Sales Funnel: 3 Strategies That Actually Work](https://youtu.be/REb6AQ4H18w) — How to build a sales funnel that converts strangers into paying customers.
+- [High Converting B2B Landing Pages](https://youtu.be/t3jdTXusD8E) — What makes a landing page actually generate leads (not just look pretty).
+- [What's ACTUALLY Happening in SaaS Right Now](https://youtu.be/471Jk0wTFes) — Three macro trends every AI SaaS founder needs to understand to win in this market.
+- [The Best Lead Generation Strategy for 2026](https://youtu.be/LuHqUT2Uo90) — How to build an inbound lead gen engine that works while you sleep.
+
+Subscribe to [TK's YouTube channel](https://tkkader.com/youtube) for weekly episodes on SaaS growth, GTM strategy, and building companies that scale.
