@@ -242,6 +242,55 @@ TECH_TOPICS = [
 
 PR_NUMBERS = list(range(1234, 1320))
 
+MARKETING_CAMPAIGNS = [
+    "Spring Launch", "Product Hunt Day", "Enterprise Push Q2",
+    "Dev Conference Blitz", "Year-End Wrap", "Customer Stories",
+    "ABM Pilot", "Rebrand 2025", "Holiday Promo", "Webinar Series",
+]
+MARKETING_CHANNELS = [
+    "organic search", "paid social", "email nurture", "LinkedIn ads",
+    "Google Ads", "content syndication", "partner co-marketing",
+    "podcast sponsorship", "YouTube pre-roll", "Reddit community",
+]
+SALES_STAGES = [
+    "Discovery", "Qualification", "Demo Scheduled", "Proposal Sent",
+    "Negotiation", "Verbal Commit", "Closed Won", "Closed Lost",
+]
+CUSTOMERS = [
+    "Acme Corp", "Globex Industries", "Initech", "Umbrella LLC",
+    "Massive Dynamic", "Soylent Corp", "Wonka Enterprises",
+    "Sterling Cooper", "Dunder Mifflin", "Pied Piper",
+    "Hooli", "Stark Industries", "Wayne Enterprises",
+]
+TICKET_TOPICS = [
+    "SSO login loop", "CSV export timeout", "webhook not firing",
+    "missing email notifications", "dashboard loading slow",
+    "permission denied on admin page", "API rate limit confusion",
+    "password reset broken", "billing charge disputed", "2FA lockout",
+]
+HR_TOPICS = [
+    "onboarding checklist", "benefits enrollment", "performance review cycle",
+    "PTO policy update", "engagement survey", "L&D budget",
+    "hiring pipeline", "diversity report", "offboarding process",
+    "comp benchmarking",
+]
+LEGAL_TOPICS = [
+    "DPA review", "vendor contract", "NDA renewal", "SOC 2 compliance",
+    "privacy policy update", "terms of service revision", "IP assignment",
+    "export control check", "GDPR data request", "insurance renewal",
+]
+DESIGN_SCREENS = [
+    "onboarding flow", "settings page", "dashboard v2", "pricing page",
+    "checkout flow", "user profile", "notification center", "admin panel",
+    "search results", "mobile nav", "empty states", "error pages",
+]
+DATA_MODELS = [
+    "churn prediction", "lead scoring", "recommendation engine",
+    "anomaly detection", "demand forecasting", "NLP classifier",
+    "embedding model", "time-series forecast", "clustering pipeline",
+    "A/B test analyzer",
+]
+
 # Template functions — each returns a message string
 
 def _t_deploy(bot: Bot) -> str:
@@ -281,15 +330,146 @@ def _t_sprint(bot: Bot) -> str:
 def _t_question(bot: Bot, target: str) -> str:
     svc = random.choice(SERVICES)
     feat = random.choice(FEATURES)
+    dept = bot.department
+    if dept in ("Engineering Backend", "Engineering Frontend"):
+        return random.choice([
+            f"@{target} are we still on track for {feat} this sprint?",
+            f"@{target} does {svc} support batch requests yet?",
+            f"@{target} have you seen the error spike on {svc}?",
+            f"@{target} what's the status on the {svc} migration?",
+            f"@{target} is {svc} ready for the load test tomorrow?",
+            f"@{target} can you review the {feat} API spec?",
+            f"@{target} thoughts on the {random.choice(TECH_TOPICS)} approach?",
+            f"@{target} did the schema migration for {svc} land?",
+        ])
+    if dept == "Infrastructure":
+        return random.choice([
+            f"@{target} are the {svc} pods healthy after the rollout?",
+            f"@{target} do we have monitoring for the new {svc} endpoint?",
+            f"@{target} what's the current cost for {svc} infra?",
+            f"@{target} can we get staging access for {svc} load testing?",
+            f"@{target} is the {svc} Terraform state locked by someone?",
+            f"@{target} when is the next maintenance window?",
+            f"@{target} should we set up a canary deploy for {feat}?",
+        ])
+    if dept == "QA":
+        return random.choice([
+            f"@{target} do we have a test environment for {feat}?",
+            f"@{target} what are the acceptance criteria for {feat}?",
+            f"@{target} is the {svc} regression suite up to date?",
+            f"@{target} can I get test data for {feat}?",
+            f"@{target} should we block release for the {svc} flaky tests?",
+            f"@{target} are there known issues with {feat} on mobile?",
+        ])
+    if dept == "Product":
+        return random.choice([
+            f"@{target} what's the ETA on {feat}?",
+            f"@{target} do we have usage data for {feat}?",
+            f"@{target} can we scope down {feat} for the MVP?",
+            f"@{target} how are customers reacting to {feat}?",
+            f"@{target} should we prioritize {feat} over the {svc} work?",
+            f"@{target} is the {feat} PRD finalized?",
+        ])
+    if dept == "Design":
+        return random.choice([
+            f"@{target} can you check the {random.choice(DESIGN_SCREENS)} implementation against the mocks?",
+            f"@{target} are the {random.choice(DESIGN_SCREENS)} designs final?",
+            f"@{target} do we need a new component for {feat}?",
+            f"@{target} what's the interaction pattern for {feat}?",
+            f"@{target} can we schedule a usability review for {random.choice(DESIGN_SCREENS)}?",
+            f"@{target} is the design system token for this approved?",
+        ])
+    if dept == "Data & ML":
+        model = random.choice(DATA_MODELS)
+        return random.choice([
+            f"@{target} is the training data for {model} ready?",
+            f"@{target} what's the expected latency for {model} inference?",
+            f"@{target} can we get more compute for the {model} training run?",
+            f"@{target} are there data quality issues in the {svc} pipeline?",
+            f"@{target} should we A/B test the new {model} against baseline?",
+            f"@{target} what metrics should we track for {model}?",
+        ])
+    if dept == "Sales":
+        customer = random.choice(CUSTOMERS)
+        return random.choice([
+            f"@{target} does {feat} work for {customer}'s use case?",
+            f"@{target} can we get a demo environment for {customer}?",
+            f"@{target} what's our positioning against {random.choice(['Competitor A','Competitor B'])}?",
+            f"@{target} is {feat} ready for enterprise customers?",
+            f"@{target} can we expedite the {customer} contract?",
+            f"@{target} when can I tell {customer} that {feat} ships?",
+        ])
+    if dept == "Support":
+        topic = random.choice(TICKET_TOPICS)
+        return random.choice([
+            f"@{target} is the {topic} issue a known bug?",
+            f"@{target} do we have a workaround for {topic}?",
+            f"@{target} should I escalate the {topic} tickets to eng?",
+            f"@{target} when is the fix for {topic} shipping?",
+            f"@{target} can we update the KB article for {topic}?",
+            f"@{target} are other customers seeing {topic} too?",
+        ])
+    if dept == "Marketing":
+        campaign = random.choice(MARKETING_CAMPAIGNS)
+        return random.choice([
+            f"@{target} is {feat} ready for the '{campaign}' announcement?",
+            f"@{target} can we get a quote for the {feat} case study?",
+            f"@{target} what's the messaging for {feat}?",
+            f"@{target} do we have assets for the '{campaign}' launch?",
+            f"@{target} when does the blog post for {feat} go live?",
+            f"@{target} can we feature {feat} in the newsletter?",
+        ])
+    if dept == "HR & People":
+        return random.choice([
+            f"@{target} is the job description for the {random.choice(['backend','frontend','product','design'])} role approved?",
+            f"@{target} when are performance reviews due?",
+            f"@{target} can we schedule the team building event for next month?",
+            f"@{target} what's the status on the new hire onboarding?",
+            f"@{target} do we have budget for the L&D program?",
+            f"@{target} is the engagement survey ready to send?",
+        ])
+    if dept == "Finance & Legal":
+        return random.choice([
+            f"@{target} is the {random.choice(LEGAL_TOPICS)} signed off?",
+            f"@{target} do we have budget approval for the {svc} project?",
+            f"@{target} when is the next audit deadline?",
+            f"@{target} can we expedite the vendor payment?",
+            f"@{target} is the contract for {random.choice(CUSTOMERS)} ready for review?",
+            f"@{target} what's the burn rate looking like this month?",
+        ])
+    if dept == "Executive":
+        return random.choice([
+            f"@{target} can we get an update on {feat} for the board deck?",
+            f"@{target} what's the team's capacity for next quarter?",
+            f"@{target} how are the OKRs tracking?",
+            f"@{target} can we discuss the {feat} strategy?",
+            f"@{target} what's the hiring plan for {random.choice(list(DEPARTMENTS.keys()))}?",
+            f"@{target} should we reprioritize given the {random.choice(['market shift','customer feedback','competitor move'])}?",
+        ])
+    if dept == "Security":
+        return random.choice([
+            f"@{target} is {svc} compliant with the new security policy?",
+            f"@{target} when is the pen test for {svc} scheduled?",
+            f"@{target} did we patch the latest CVE on {svc}?",
+            f"@{target} can we review the access controls for {svc}?",
+            f"@{target} is the security incident playbook up to date?",
+            f"@{target} should we rotate the {svc} API keys?",
+        ])
+    if dept == "IT":
+        return random.choice([
+            f"@{target} did the new laptops ship?",
+            f"@{target} is the SSO integration with {random.choice(['Okta','Google Workspace','Azure AD'])} working?",
+            f"@{target} can we reclaim the unused software licenses?",
+            f"@{target} when is the VPN maintenance window?",
+            f"@{target} should we upgrade the office WiFi?",
+            f"@{target} is the new employee provisioning script ready?",
+        ])
+    # Fallback
     return random.choice([
         f"@{target} are we still on track for {feat} this sprint?",
         f"@{target} quick q \u2014 does {svc} support batch requests yet?",
-        f"@{target} have you seen the latest error spike on {svc}?",
-        f"@{target} can you take a look at the {feat} spec when you get a sec?",
+        f"@{target} can you take a look at the {feat} spec?",
         f"@{target} what's the status on the {svc} migration?",
-        f"@{target} do we have docs for the {feat} API?",
-        f"@{target} is {svc} ready for the load test tomorrow?",
-        f"@{target} thoughts on the {random.choice(TECH_TOPICS)} approach?",
     ])
 
 def _t_reply_agree(bot: Bot, target: str) -> str:
@@ -351,21 +531,402 @@ def _t_social(bot: Bot) -> str:
         "Wrapping up early today \u2014 kids' school play. Back online at 8pm.",
     ])
 
+def _t_backend(bot: Bot) -> str:
+    svc = random.choice(SERVICES)
+    return random.choice([
+        f"Optimized the {svc} query \u2014 down from {random.randint(200,800)}ms to {random.randint(15,60)}ms.",
+        f"Added pagination to the {svc} list endpoint. Was returning 10k rows unbounded.",
+        f"Schema migration for {svc} is ready \u2014 adding {random.choice(['indexes','partitioning','a new column','foreign keys'])}.",
+        f"Refactored {svc} to use connection pooling. Pool size: {random.randint(20,60)}.",
+        f"The {svc} N+1 query is fixed. Went from {random.randint(80,200)} queries to {random.randint(2,5)}.",
+        f"Wrote a data backfill script for {svc}. ~{random.randint(1,8)}M rows, should take {random.randint(10,45)} min.",
+        f"Added {random.choice(['Redis caching','write-behind cache','read replicas'])} to {svc}. Latency cut in half.",
+        f"API versioning on {svc} is done \u2014 v1 stays, v2 is the new default.",
+    ])
+
+def _t_frontend(bot: Bot) -> str:
+    feat = random.choice(FEATURES)
+    return random.choice([
+        f"Lighthouse score for {feat} page: {random.randint(88,100)} performance, {random.randint(90,100)} a11y.",
+        f"Bundle size after tree-shaking {feat}: {random.randint(40,180)}KB (down from {random.randint(200,450)}KB).",
+        f"New {feat} component is in Storybook. All variants documented.",
+        f"Fixed the layout shift on {feat} \u2014 CLS down to {random.uniform(0.01, 0.08):.3f}.",
+        f"Keyboard navigation for {feat} is fully working now. Tab order makes sense.",
+        f"Migrated {feat} from class components to hooks. Much cleaner.",
+        f"Added skeleton loaders to {feat}. Perceived load time feels instant.",
+        f"i18n strings for {feat} extracted \u2014 {random.randint(30,120)} keys ready for translation.",
+    ])
+
+def _t_infra(bot: Bot) -> str:
+    svc = random.choice(SERVICES)
+    return random.choice([
+        f"Scaled {svc} pods from {random.randint(3,8)} to {random.randint(10,24)}. Traffic spike handled.",
+        f"Terraform plan for {svc}: {random.randint(3,12)} resources to add, {random.randint(0,3)} to change.",
+        f"TLS cert for {svc} renewed. Expires in {random.randint(60,365)} days.",
+        f"CI pipeline for {svc} optimized \u2014 build time from {random.randint(8,20)}min to {random.randint(2,6)}min.",
+        f"AWS cost for {svc} last month: ${random.randint(800,5000)}. Found {random.randint(1,4)} idle resources to kill.",
+        f"Migrated {svc} to arm64 nodes. ~{random.randint(15,35)}% cost savings.",
+        f"New Grafana dashboard for {svc} is live. Alert thresholds tuned.",
+        f"Disaster recovery test passed for {svc}. RTO: {random.randint(5,30)} min.",
+    ])
+
+def _t_qa(bot: Bot) -> str:
+    svc = random.choice(SERVICES)
+    feat = random.choice(FEATURES)
+    return random.choice([
+        f"Found a race condition in {svc} under concurrent load. Opened a bug.",
+        f"Test coverage for {feat}: {random.randint(72,95)}%. Still missing edge cases for error paths.",
+        f"Regression suite passed \u2014 {random.randint(180,500)} tests, {random.randint(0,2)} flaky.",
+        f"Exploratory testing on {feat} done. Filed {random.randint(2,7)} bugs, {random.randint(1,3)} are P1.",
+        f"Load test results: {svc} handles {random.randint(500,3000)} RPS before degradation.",
+        f"The {feat} flow breaks on Safari when using a screen reader. Logging accessibility bug.",
+        f"Automated the {feat} smoke tests. Runs in {random.randint(30,180)}s now.",
+        f"Signed off on {feat} for release. All acceptance criteria met.",
+    ])
+
+def _t_product(bot: Bot) -> str:
+    feat = random.choice(FEATURES)
+    return random.choice([
+        f"PRD for {feat} is ready for eng review. Scope is tight this time.",
+        f"A/B test results on {feat}: variant B won with {random.randint(5,25)}% lift in conversions.",
+        f"NPS for {feat} is {random.randint(35,72)}. Top complaint: {random.choice(['complexity','speed','discoverability'])}.",
+        f"Roadmap updated \u2014 {feat} moved to {random.choice(['this sprint','next sprint','Q3','backlog'])}.",
+        f"Customer interview takeaway: {feat} is the #1 requested capability.",
+        f"Prioritization done \u2014 cutting {random.randint(2,5)} items to make room for {feat}.",
+        f"Usage data shows {random.randint(8,40)}% of users engage with {feat} weekly.",
+        f"Feature flag plan for {feat}: 5% rollout \u2192 25% \u2192 100% over 2 weeks.",
+    ])
+
+def _t_design(bot: Bot) -> str:
+    screen = random.choice(DESIGN_SCREENS)
+    return random.choice([
+        f"Figma file for {screen} is ready. {random.randint(3,8)} screens, all states covered.",
+        f"Usability test on {screen}: {random.randint(4,6)}/5 participants completed the task unaided.",
+        f"Design system update: new {random.choice(['button variants','spacing tokens','color ramp','icon set'])} pushed.",
+        f"Prototype for {screen} is in Figma. Interactive, ready for stakeholder review.",
+        f"Accessibility audit on {screen}: contrast ratio issues on {random.randint(2,6)} elements. Fixing now.",
+        f"Mobile designs for {screen} adapted. Breakpoints at 375px and 768px.",
+        f"Design QA on {screen} \u2014 found {random.randint(3,10)} pixel discrepancies vs implementation.",
+        f"User flow diagram for {screen} updated. Added {random.randint(2,4)} edge case paths.",
+    ])
+
+def _t_data(bot: Bot) -> str:
+    model = random.choice(DATA_MODELS)
+    return random.choice([
+        f"{model} training run #{random.randint(12,99)} complete. AUC: 0.{random.randint(82,97)}.",
+        f"ETL pipeline processed {random.randint(5,50)}M rows overnight. No failures.",
+        f"Feature importance analysis for {model} done \u2014 top 3 features explain {random.randint(60,85)}%.",
+        f"A/B experiment #{random.randint(100,300)} concluded: {random.choice(['significant','not significant','borderline'])} at p<0.05.",
+        f"Data quality check: {random.randint(0,3)}% null rate on key columns. Within threshold.",
+        f"New {model} outperforms baseline by {random.randint(3,15)}%. Ready for shadow mode.",
+        f"Airflow DAG for {model} retrained on schedule. Next run in {random.randint(4,24)}h.",
+        f"Dashboard for {model} metrics is live. Stakeholders have access.",
+    ])
+
+def _t_marketing(bot: Bot) -> str:
+    campaign = random.choice(MARKETING_CAMPAIGNS)
+    channel = random.choice(MARKETING_CHANNELS)
+    return random.choice([
+        f"'{campaign}' campaign launched on {channel}. Early CTR: {random.uniform(1.5, 6.0):.1f}%.",
+        f"SEO update: organic traffic up {random.randint(5,30)}% MoM. Top keyword ranking improved.",
+        f"Email nurture sequence open rate: {random.randint(22,45)}%. Click-through: {random.randint(3,12)}%.",
+        f"Content calendar for next month is finalized \u2014 {random.randint(8,20)} pieces planned.",
+        f"'{campaign}' ROI so far: {random.randint(2,8)}x. {channel} is the top performer.",
+        f"Blog post on {random.choice(TECH_TOPICS)} published. Targeting featured snippet.",
+        f"Social engagement up {random.randint(10,60)}% this week. That LinkedIn post went viral.",
+        f"MQL count this month: {random.randint(80,300)}. Pipeline attribution looks healthy.",
+    ])
+
+def _t_sales(bot: Bot) -> str:
+    customer = random.choice(CUSTOMERS)
+    stage = random.choice(SALES_STAGES)
+    return random.choice([
+        f"{customer} deal moved to {stage}. ACV: ${random.randint(20,200)}K.",
+        f"Pipeline this quarter: ${random.randint(500,3000)}K. {random.randint(60,95)}% to target.",
+        f"Demo with {customer} went well. They want a follow-up with their CTO.",
+        f"Win/loss analysis: lost {customer} to {random.choice(['pricing','missing feature','competitor','timing'])}.",
+        f"Renewal for {customer} is up next month. Health score: {random.choice(['green','yellow','at risk'])}.",
+        f"Booked {random.randint(3,10)} demos this week. SDR team is crushing it.",
+        f"Competitive intel: {random.choice(['Competitor A','Competitor B'])} dropped their price by {random.randint(10,30)}%.",
+        f"{customer} asked about {random.choice(FEATURES)}. Logging as a feature request.",
+    ])
+
+def _t_support(bot: Bot) -> str:
+    topic = random.choice(TICKET_TOPICS)
+    return random.choice([
+        f"Ticket volume today: {random.randint(30,120)}. Top issue: {topic}.",
+        f"CSAT this week: {random.randint(85,98)}%. Slight dip from {topic} tickets.",
+        f"Escalated {topic} to engineering \u2014 {random.randint(5,20)} customers affected.",
+        f"KB article for '{topic}' updated. Should reduce repeat tickets.",
+        f"Median first response time: {random.randint(4,30)} min. Under SLA.",
+        f"Created a canned response for {topic}. Will save ~{random.randint(2,5)} min per ticket.",
+        f"Customer {random.choice(CUSTOMERS)} flagged as churn risk \u2014 multiple {topic} tickets.",
+        f"Resolved {random.randint(15,50)} tickets today. Backlog down to {random.randint(10,40)}.",
+    ])
+
+def _t_hr(bot: Bot) -> str:
+    topic = random.choice(HR_TOPICS)
+    return random.choice([
+        f"{topic.capitalize()} is finalized. Rolling out to all teams next week.",
+        f"Hiring update: {random.randint(3,12)} open roles, {random.randint(10,50)} candidates in pipeline.",
+        f"Engagement survey results: {random.randint(72,92)}% favorable. Action items being drafted.",
+        f"New onboarding cohort: {random.randint(3,8)} people starting Monday.",
+        f"L&D budget approved \u2014 ${random.randint(500,2000)} per head for training.",
+        f"Updated the {topic} process. Docs in Notion.",
+        f"Retention rate this quarter: {random.randint(92,99)}%. Exit interviews show no red flags.",
+        f"Offer extended to a strong candidate for the {random.choice(['backend','frontend','product','design'])} role.",
+    ])
+
+def _t_finance(bot: Bot) -> str:
+    topic = random.choice(LEGAL_TOPICS)
+    return random.choice([
+        f"Monthly burn rate: ${random.randint(200,800)}K. Runway: {random.randint(14,36)} months.",
+        f"{topic.capitalize()} review is done \u2014 no blockers.",
+        f"Q{random.randint(1,4)} audit prep is {random.randint(70,100)}% complete.",
+        f"Budget approval for {random.choice(SERVICES)} scaling \u2014 ${random.randint(5,50)}K/mo.",
+        f"Vendor invoice from {random.choice(CUSTOMERS)} processed. Net-30 terms.",
+        f"Updated the financial model \u2014 new ARR projection: ${random.randint(2,20)}M.",
+        f"Contract for {random.choice(['AWS','GCP','Datadog','Snowflake','Slack'])} renewal is under review.",
+        f"Expense reports deadline is Friday. {random.randint(5,20)} still outstanding.",
+    ])
+
+def _t_executive(bot: Bot) -> str:
+    return random.choice([
+        f"Board deck for Q{random.randint(1,4)} is ready. Key theme: {random.choice(['growth','efficiency','expansion','profitability'])}.",
+        "All-hands agenda is set. Main topics: roadmap update and team wins.",
+        f"Strategic initiative '{random.choice(FEATURES)}' kicked off. Exec sponsor assigned.",
+        f"Investor update sent. ARR growth: {random.randint(20,80)}% YoY.",
+        f"Leadership offsite planned for {random.choice(['next month','Q3','early Q4'])}. Focus: org structure.",
+        f"Headcount plan approved \u2014 adding {random.randint(5,20)} roles across {random.randint(2,4)} teams.",
+        f"Customer NPS trending up. Overall score: {random.randint(45,75)}.",
+        f"OKRs for next quarter drafted. {random.randint(3,5)} company-level objectives.",
+    ])
+
+def _t_security(bot: Bot) -> str:
+    svc = random.choice(SERVICES)
+    return random.choice([
+        f"Vuln scan on {svc} complete \u2014 {random.randint(0,5)} findings, {random.randint(0,2)} critical.",
+        f"Pen test report for {svc} is in. {random.randint(1,4)} medium-severity issues to fix.",
+        f"New CVE affecting {random.choice(['OpenSSL','log4j','curl','nginx'])} \u2014 patching across all services.",
+        f"SOC 2 evidence collection: {random.randint(70,100)}% complete. Audit starts next month.",
+        f"WAF rules updated \u2014 blocked {random.randint(500,5000)} malicious requests last week.",
+        f"Security awareness training completion: {random.randint(75,98)}%. Sending reminders.",
+        f"Rotated API keys for {svc}. Old keys expire in 24h.",
+        f"Incident response drill scheduled for Thursday. Tabletop exercise on {random.choice(['data breach','ransomware','DDoS'])}.",
+    ])
+
+def _t_it(bot: Bot) -> str:
+    return random.choice([
+        f"Provisioned {random.randint(3,10)} new laptops for the incoming cohort.",
+        f"SSO integration with {random.choice(['Okta','Google Workspace','Azure AD'])} updated. No downtime.",
+        f"Software license audit: {random.randint(5,20)} unused {random.choice(['Figma','Notion','Jira','Slack'])} seats. Reclaiming.",
+        f"VPN capacity increased \u2014 peak concurrent users was hitting {random.randint(60,95)}% of limit.",
+        f"MDM policy pushed to all devices. {random.randint(2,8)} non-compliant machines flagged.",
+        f"New printer on floor {random.randint(2,5)} is set up. Driver link is in #it-help.",
+        f"Resolved {random.randint(5,20)} IT tickets today. Most common: password reset.",
+        f"Office WiFi upgraded \u2014 new AP on floor {random.randint(2,5)}. Speed test: {random.randint(200,600)}Mbps.",
+    ])
+
 def _t_crossdept(bot: Bot, target: str) -> str:
     feat = random.choice(FEATURES)
     svc = random.choice(SERVICES)
+    dept = bot.department
+    if dept in ("Engineering Backend", "Engineering Frontend"):
+        return random.choice([
+            f"@{target} can product confirm the {feat} spec is final?",
+            f"@{target} design review needed for the {feat} PR.",
+            f"@{target} QA \u2014 {feat} is in staging, ready for your pass.",
+            f"@{target} support is reporting issues with {svc}. We're investigating.",
+            f"@{target} infra \u2014 do we need to scale {svc} before launch?",
+            f"@{target} security \u2014 can you review the auth changes in {svc}?",
+        ])
+    if dept == "Infrastructure":
+        return random.choice([
+            f"@{target} engineering \u2014 {svc} needs a config change for the new infra.",
+            f"@{target} security \u2014 cert rotation for {svc} is scheduled tonight.",
+            f"@{target} finance \u2014 cloud costs for {svc} need budget approval.",
+            f"@{target} heads up, the {svc} deployment pipeline has a new gate.",
+            f"@{target} can someone from eng verify {svc} after the migration?",
+        ])
+    if dept == "QA":
+        return random.choice([
+            f"@{target} engineering \u2014 found a blocker in {feat}. Details in the bug.",
+            f"@{target} product \u2014 acceptance criteria for {feat} need clarification.",
+            f"@{target} design \u2014 the {feat} flow doesn't match the latest mocks.",
+            f"@{target} release is blocked until the {svc} regression passes.",
+            f"@{target} support \u2014 heads up, {feat} has a known edge case. Workaround in the ticket.",
+        ])
+    if dept == "Product":
+        return random.choice([
+            f"@{target} engineering \u2014 what's the effort estimate for {feat}?",
+            f"@{target} design \u2014 can we get mocks for {feat} by end of week?",
+            f"@{target} marketing \u2014 {feat} is launching soon, let's sync on messaging.",
+            f"@{target} sales \u2014 any customer feedback on the {feat} beta?",
+            f"@{target} data \u2014 can we get usage metrics for {feat}?",
+            f"@{target} support \u2014 what's the top complaint related to {feat}?",
+        ])
+    if dept == "Design":
+        return random.choice([
+            f"@{target} engineering \u2014 the {feat} handoff is in Figma. Let me know if questions.",
+            f"@{target} product \u2014 need requirements clarified for the {random.choice(DESIGN_SCREENS)} redesign.",
+            f"@{target} frontend \u2014 can you check the {random.choice(DESIGN_SCREENS)} implementation?",
+            f"@{target} marketing \u2014 brand assets for {feat} are ready.",
+            f"@{target} research session for {random.choice(DESIGN_SCREENS)} is scheduled. Want to observe?",
+        ])
+    if dept == "Data & ML":
+        model = random.choice(DATA_MODELS)
+        return random.choice([
+            f"@{target} engineering \u2014 the {model} API needs a new endpoint for scoring.",
+            f"@{target} product \u2014 {model} results show interesting user segments.",
+            f"@{target} infra \u2014 we need more GPU quota for {model} training.",
+            f"@{target} the experiment results for {feat} are ready for review.",
+            f"@{target} marketing \u2014 the {model} data supports the campaign targeting.",
+        ])
+    if dept == "Sales":
+        customer = random.choice(CUSTOMERS)
+        return random.choice([
+            f"@{target} engineering \u2014 {customer} needs a demo environment for {feat}.",
+            f"@{target} product \u2014 {customer} is asking for {feat}. Can we fast-track?",
+            f"@{target} legal \u2014 the {customer} contract needs a custom clause.",
+            f"@{target} support \u2014 {customer} is at risk. Can we prioritize their tickets?",
+            f"@{target} marketing \u2014 can we get a case study from {customer}?",
+        ])
+    if dept == "Support":
+        topic = random.choice(TICKET_TOPICS)
+        return random.choice([
+            f"@{target} engineering \u2014 escalating {topic}. {random.randint(5,20)} customers affected.",
+            f"@{target} product \u2014 {topic} is the #1 support driver this week.",
+            f"@{target} sales \u2014 heads up, {random.choice(CUSTOMERS)} is frustrated about {topic}.",
+            f"@{target} QA \u2014 can we reproduce {topic} in staging?",
+            f"@{target} docs for {topic} need updating \u2014 getting repeat questions.",
+        ])
+    if dept == "Marketing":
+        campaign = random.choice(MARKETING_CAMPAIGNS)
+        return random.choice([
+            f"@{target} product \u2014 is {feat} launch-ready? '{campaign}' goes live Monday.",
+            f"@{target} design \u2014 need visuals for the '{campaign}' campaign.",
+            f"@{target} sales \u2014 '{campaign}' leads are coming in. Ready to follow up?",
+            f"@{target} engineering \u2014 can we get a technical blog post for {feat}?",
+            f"@{target} exec \u2014 '{campaign}' results deck is ready for review.",
+        ])
+    if dept == "HR & People":
+        return random.choice([
+            f"@{target} hiring update: {random.randint(3,8)} candidates in pipeline for your team.",
+            f"@{target} reminder: engagement survey closes Friday.",
+            f"@{target} the new {random.choice(HR_TOPICS)} policy is live. Please review.",
+            f"@{target} onboarding for your new hire is scheduled. Calendar invite sent.",
+            f"@{target} L&D budget for your team is approved. Details in email.",
+        ])
+    if dept == "Finance & Legal":
+        return random.choice([
+            f"@{target} budget for the {svc} project is approved.",
+            f"@{target} the {random.choice(LEGAL_TOPICS)} is signed. You're unblocked.",
+            f"@{target} need receipts for last month's expenses by Friday.",
+            f"@{target} vendor contract for {random.choice(['AWS','Datadog','Snowflake'])} renewal is ready for signatures.",
+            f"@{target} Q{random.randint(1,4)} financial review is scheduled. Please prep your team's numbers.",
+        ])
+    if dept == "Executive":
+        return random.choice([
+            f"@{target} let's discuss the {feat} strategy in the leadership sync.",
+            f"@{target} the board wants an update on {random.choice(['growth','ARR','headcount','product roadmap'])}.",
+            f"@{target} great work on {feat} \u2014 calling it out at all-hands.",
+            f"@{target} we need to align on priorities for next quarter.",
+            f"@{target} investor meeting next week \u2014 can you prep the {random.choice(['product','engineering','growth'])} slides?",
+        ])
+    if dept == "Security":
+        return random.choice([
+            f"@{target} engineering \u2014 {svc} needs the latest security patch applied.",
+            f"@{target} IT \u2014 we need to rotate credentials for {random.randint(3,8)} services.",
+            f"@{target} legal \u2014 the SOC 2 evidence package is ready for review.",
+            f"@{target} infra \u2014 the WAF rules for {svc} need updating.",
+            f"@{target} please complete the security training by end of week.",
+        ])
+    if dept == "IT":
+        return random.choice([
+            f"@{target} your team has {random.randint(2,6)} unused software licenses to reclaim.",
+            f"@{target} the SSO migration is complete for your department.",
+            f"@{target} new laptops for your team's hires are ready for pickup.",
+            f"@{target} VPN maintenance tonight 10pm-2am. Plan accordingly.",
+            f"@{target} security \u2014 can we review the MDM policy exceptions?",
+        ])
+    # Fallback
     return random.choice([
-        f"@{target} the {feat} mockups are ready for eng review.",
-        f"@{target} can we get a sales perspective on the {feat} pricing?",
-        f"@{target} legal signed off on the {feat} data handling.",
-        f"@{target} support is seeing tickets about {svc}. Is there a known issue?",
-        f"@{target} marketing wants to announce {feat} next week \u2014 is it launch-ready?",
-        f"@{target} the {feat} docs need a final review from your team.",
-        f"@{target} finance approved the budget for {svc} scaling.",
-        f"@{target} design handoff for {feat} is in Figma. Let me know if questions.",
-        f"@{target} got customer feedback on {feat} from 3 enterprise accounts.",
-        f"@{target} the {feat} beta results are in \u2014 NPS at {random.randint(40, 80)}.",
+        f"@{target} the {feat} update is ready for your review.",
+        f"@{target} can we sync on {feat}? Need your team's input.",
+        f"@{target} heads up \u2014 {svc} changes may affect your workflow.",
     ])
+
+# ---------------------------------------------------------------------------
+# Department template mappings
+# ---------------------------------------------------------------------------
+
+DEPT_TEMPLATE_FN = {
+    "Engineering Backend": _t_backend,
+    "Engineering Frontend": _t_frontend,
+    "Infrastructure": _t_infra,
+    "QA": _t_qa,
+    "Product": _t_product,
+    "Design": _t_design,
+    "Data & ML": _t_data,
+    "Marketing": _t_marketing,
+    "Sales": _t_sales,
+    "Support": _t_support,
+    "HR & People": _t_hr,
+    "Finance & Legal": _t_finance,
+    "Executive": _t_executive,
+    "Security": _t_security,
+    "IT": _t_it,
+}
+
+# (func, weight) pairs — dept-specific dominates, shared templates fill in
+_eng_standalone = lambda fn: [
+    (fn, 35), (_t_deploy, 15), (_t_pr, 15), (_t_technical, 15),
+    (_t_sprint, 10), (_t_social, 10),
+]
+_noneng_standalone = lambda fn: [
+    (fn, 50), (_t_sprint, 15), (_t_social, 20),
+    (_t_deploy, 5), (_t_pr, 5), (_t_technical, 5),
+]
+
+DEPT_STANDALONE = {
+    "Engineering Backend": _eng_standalone(_t_backend),
+    "Engineering Frontend": _eng_standalone(_t_frontend),
+    "Infrastructure": _eng_standalone(_t_infra),
+    "QA": _eng_standalone(_t_qa),
+    "Security": _eng_standalone(_t_security),
+    "Product": [(_t_product, 45), (_t_sprint, 20), (_t_social, 15), (_t_technical, 10), (_t_deploy, 5), (_t_pr, 5)],
+    "Design": _noneng_standalone(_t_design),
+    "Data & ML": [(_t_data, 40), (_t_technical, 15), (_t_sprint, 15), (_t_social, 15), (_t_deploy, 8), (_t_pr, 7)],
+    "Marketing": _noneng_standalone(_t_marketing),
+    "Sales": _noneng_standalone(_t_sales),
+    "Support": _noneng_standalone(_t_support),
+    "HR & People": _noneng_standalone(_t_hr),
+    "Finance & Legal": _noneng_standalone(_t_finance),
+    "Executive": [(_t_executive, 50), (_t_social, 20), (_t_sprint, 15), (_t_technical, 5), (_t_deploy, 5), (_t_pr, 5)],
+    "IT": _noneng_standalone(_t_it),
+}
+
+# Thread start behavior weights: (type_key, weight)
+_eng_thread = [("question", 25), ("crossdept", 15), ("deploy", 25), ("pr", 20), ("dept_specific", 15)]
+_noneng_thread = [("question", 20), ("crossdept", 35), ("dept_specific", 35), ("deploy", 5), ("pr", 5)]
+
+DEPT_THREAD_START = {
+    "Engineering Backend": _eng_thread,
+    "Engineering Frontend": _eng_thread,
+    "Infrastructure": _eng_thread,
+    "QA": [("question", 25), ("crossdept", 20), ("dept_specific", 30), ("deploy", 10), ("pr", 15)],
+    "Security": [("question", 20), ("crossdept", 25), ("dept_specific", 35), ("deploy", 10), ("pr", 10)],
+    "Product": [("question", 25), ("crossdept", 30), ("dept_specific", 30), ("deploy", 5), ("pr", 10)],
+    "Design": [("question", 20), ("crossdept", 30), ("dept_specific", 40), ("deploy", 5), ("pr", 5)],
+    "Data & ML": [("question", 25), ("crossdept", 20), ("dept_specific", 30), ("deploy", 10), ("pr", 15)],
+    "Marketing": _noneng_thread,
+    "Sales": [("question", 15), ("crossdept", 40), ("dept_specific", 35), ("deploy", 5), ("pr", 5)],
+    "Support": [("question", 20), ("crossdept", 35), ("dept_specific", 35), ("deploy", 5), ("pr", 5)],
+    "HR & People": _noneng_thread,
+    "Finance & Legal": _noneng_thread,
+    "Executive": [("question", 20), ("crossdept", 30), ("dept_specific", 40), ("deploy", 5), ("pr", 5)],
+    "IT": _noneng_thread,
+}
 
 # ---------------------------------------------------------------------------
 # Conversation threading
@@ -513,22 +1074,29 @@ class MessageEngine:
         speaker = self._pick_speaker()
         target = self._pick_other(speaker)
 
-        # Decide message type
-        roll = random.random()
-        if roll < 0.35:
+        _fallback = [("question", 30), ("crossdept", 25), ("deploy", 20), ("pr", 15), ("dept_specific", 10)]
+        behaviors = DEPT_THREAD_START.get(speaker.department, _fallback)
+        keys, weights = zip(*behaviors)
+        choice = random.choices(keys, weights=weights, k=1)[0]
+
+        if choice == "question":
             text = _t_question(speaker, target.name.split()[0])
             is_mention = True
-        elif roll < 0.60:
+        elif choice == "crossdept":
             text = _t_crossdept(speaker, self._pick_crossdept(speaker).name.split()[0])
             is_mention = True
-        elif roll < 0.80:
+        elif choice == "deploy":
             text = _t_deploy(speaker)
             is_mention = False
-        else:
+        elif choice == "pr":
             text = _t_pr(speaker)
             is_mention = False
+        else:  # dept_specific
+            dept_fn = DEPT_TEMPLATE_FN.get(speaker.department, _t_technical)
+            text = dept_fn(speaker)
+            is_mention = False
 
-        # Create thread with 2-5 participants, 2-6 messages
+        # Create thread with 2-5 participants, 1-5 follow-up messages
         participants = [speaker, target]
         for _ in range(random.randint(0, 3)):
             extra = self._pick_other(speaker)
@@ -553,16 +1121,10 @@ class MessageEngine:
 
     def _standalone(self) -> ChatMessage:
         speaker = self._pick_speaker()
-        roll = random.random()
-        if roll < 0.35:
-            text = _t_social(speaker)
-        elif roll < 0.65:
-            text = _t_technical(speaker)
-        elif roll < 0.85:
-            text = _t_sprint(speaker)
-        else:
-            text = _t_deploy(speaker)
-
+        _fallback = [(_t_social, 25), (_t_technical, 30), (_t_sprint, 25), (_t_deploy, 20)]
+        templates = DEPT_STANDALONE.get(speaker.department, _fallback)
+        funcs, weights = zip(*templates)
+        text = random.choices(funcs, weights=weights, k=1)[0](speaker)
         return ChatMessage(timestamp=self.clock.format(), bot=speaker, text=text)
 
     def generate_history(self, count: int = 25) -> list[ChatMessage]:

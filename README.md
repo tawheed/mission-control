@@ -6,7 +6,7 @@ A terminal screensaver that simulates what every founder secretly wishes their S
 
 ![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue) ![License: MIT](https://img.shields.io/badge/license-MIT-green) ![AI Agents](https://img.shields.io/badge/AI%20agents-124-purple) ![Meetings](https://img.shields.io/badge/meetings-0-brightgreen)
 
-![Mission Control Screenshot](screenshot.png)
+![Mission Control Screenshot](media/screenshot.gif)
 
 ## What Is This
 
